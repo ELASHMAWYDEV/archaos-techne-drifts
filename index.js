@@ -4,6 +4,7 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 5000;
+const nodemailer = require("nodemailer");
 const UserModel = require("./User.model");
 
 //init
@@ -37,7 +38,7 @@ app.post("/", async (req, res) => {
   //Check if email is registered before
   let userSearch = await UserModel.findOne({ email });
   if (userSearch) {
-    res.cookie("registered", false, { maxAge: 0 });
+    res.cookie("registered", true);
     return res.render("index", {
       registered: false,
       errorMsg: "You have already registered before",
@@ -50,6 +51,32 @@ app.post("/", async (req, res) => {
     email,
     businessType: business_type,
     businessName: business_name,
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: "archaos.word@gmail.com",
+    to: email,
+    subject: "Testing for techne-drifts",
+    text: "This is a test email",
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
   });
 
   res.cookie("registered", true);
