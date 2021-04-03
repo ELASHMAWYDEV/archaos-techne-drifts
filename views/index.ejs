@@ -1,0 +1,81 @@
+<html>
+
+<head>
+  <title>ARCHAOS - Techne Drifts 2021</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="icon" href="/img/archaos-logo.jpg" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+  <div class="main-container">
+
+
+    <header>
+      <div class="archaos-logo"><img src="/img/archaos-logo.jpg" alt="Archaos" /></div>
+      <div class="techne-drifts-logo"><img src="/img/techne-drifts.png" alt="Techne Drifts" /></div>
+    </header>
+    <h1 class="techne-drifts-title">Techne<br />Drifts<br />2021</h1>
+    <% if(!registered && !errorMsg) {%>
+      <form class="form-box" method="POST" action="/">
+        <div class="form-header">
+          <h3>GET 20% PROMO CODE<br />or<br />TAKE THE CHANCE TO WIN A TICKET</h3>
+        </div>
+        <div class="line"></div>
+        <div class="input-items">
+          <input type="text" placeholder="Name" name="name" required>
+          <input type="number" placeholder="Phone" pattern="^-?[0-9][0-9,\.]+$" name="phone">
+          <input type="email" placeholder="Email" name="email">
+          <div class="check-list">
+            <div>
+              <input type="radio" name="business_type" id="business-check" value="business">
+              <label for="business-check">Business</label>
+            </div>
+            <div>
+              <input type="radio" name="business_type" id="college-check" value="college">
+              <label for="college-check">College</label>
+            </div>
+          </div>
+          <input type="text" placeholder="Business Name" id="input-type" name="business_name" />
+          <button type="submit" class="submit-btn">SUBMIT</button>
+        </div>
+      </form>
+      <% } if(registered) { %>
+        <h1 class="thank-you-txt">Thank you for registering, we will send you an email with your promo code
+          shorlty<br />We will select the
+          tickets winners randomly & if you were a winner, will let you know</h1>
+        <% } %>
+          <%if(errorMsg) { %>
+
+            <h1 class="error-msg">
+              <%= errorMsg %>
+            </h1>
+            <% } %>
+  </div>
+
+
+  <script>
+
+    window.history.forward();
+
+    let businessCheck = document.querySelector("#business-check");
+    let collegeCheck = document.querySelector("#college-check");
+
+
+    let typeInput = document.querySelector("#input-type");
+
+    collegeCheck.onchange = (e) => {
+      typeInput.setAttribute("placeholder", "College Name")
+    }
+
+    businessCheck.onchange = (e) => {
+      typeInput.setAttribute("placeholder", "Business Name")
+    }
+
+  </script>
+</body>
+
+</html>
