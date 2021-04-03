@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 5000;
 const nodemailer = require("nodemailer");
+const smtpTransport = require("nodemailer-smtp-transport");
 const UserModel = require("./User.model");
 
 //init
@@ -32,7 +33,7 @@ app.post("/", async (req, res) => {
 
   if (!name || !email || !phone || !business_type || !business_name) {
     res.cookie("registered", false, { maxAge: 0 });
-    return res.render("index", { registered: false });
+    return res.render("index", { registered: false, errorMsg: "" });
   }
 
   //Check if email is registered before
@@ -55,9 +56,8 @@ app.post("/", async (req, res) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
-    host: "smtp.gmail.com",
+    server: "smtp.gmail.com",
     port: 465,
-    secure: true,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
@@ -71,16 +71,16 @@ app.post("/", async (req, res) => {
     text: "This is a test email",
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  // transporter.sendMail(mailOptions, function (error, info) {
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log("Email sent: " + info.response);
+  //   }
+  // });
 
   res.cookie("registered", true);
-  return res.render("index", { registered: true, errorMsg: "" });
+  return res.render("index", { registered: false, errorMsg: "" });
 });
 
 /*********************************************************/
