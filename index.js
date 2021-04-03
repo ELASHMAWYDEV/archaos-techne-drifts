@@ -39,7 +39,7 @@ app.post("/", async (req, res) => {
   //Check if email is registered before
   let userSearch = await UserModel.findOne({ email });
   if (userSearch) {
-    res.cookie("registered", true);
+    res.cookie("registered", false, {maxAge: 0});
     return res.render("index", {
       registered: false,
       errorMsg: "You have already registered before",
@@ -80,7 +80,7 @@ app.post("/", async (req, res) => {
   // });
 
   res.cookie("registered", true);
-  return res.render("index", { registered: false, errorMsg: "" });
+  return res.render("index", { registered: true, errorMsg: "" });
 });
 
 /*********************************************************/
